@@ -7,6 +7,10 @@ use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Symfony\Contracts\Service\Attribute\Required;
 
+//email
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendApplicationEmail;
+
 use App\Models\Application;
 
 class ApplicationController extends Controller
@@ -71,11 +75,16 @@ class ApplicationController extends Controller
                     //Salvando no banco de dados
                     $this->application->create($data_to_recover);
 
+                    //enviando email
+
+                    Mail::to('anagomes.lucia@hotmail.com')->send(new SendApplicationEmail);
+
                     $response['file'] = "Already ok";
                 } else {
                     $response['file'] = "error saving file";
                 }
             }
+            
 
             $response['response'] = "already okay";
             $response['success'] = true;
