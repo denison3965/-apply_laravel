@@ -15,12 +15,14 @@ class ApplicationServece
     private $application;
     private $repository;
     private $repository_disk;
+    private $email;
 
-    public function __construct(Application $application, ApplicationRepository $repository, RecoverOnDiskRepository $repository_disk)
+    public function __construct(Application $application, ApplicationRepository $repository, RecoverOnDiskRepository $repository_disk, SendApplicationEmail $email)
     {
         $this->application = $application;
         $this->repository = $repository;
         $this->repository_disk = $repository_disk;
+        $this->email = $email;
     }
 
 
@@ -71,7 +73,7 @@ class ApplicationServece
                     "email" => $request['email'],
                     "phone" => $request['phone'],
                     "adress" => $request['adress'],
-                    "curriculum_path" => storage_path('app/curriculums/' . $new_name_file),
+                    "curriculum_path" => 'app/curriculums/' . $new_name_file,
                     "ip" => $user_ip
                 ];
 
@@ -80,7 +82,8 @@ class ApplicationServece
                 $response['informations'] = $response_db ;
 
                 //enviando email
-                Mail::to('anagomes.lucia@hotmail.com')->send(new SendApplicationEmail);
+                $this->application->setInformations($data_to_recover);
+                Mail::to(env('REMETENTE_EMAIL'))->send(new SendApplicationEmail($this->application));
 
                 $response['file'] = "curriculum saved successfully";
             } else {
