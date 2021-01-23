@@ -12,85 +12,42 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendApplicationEmail;
 
 use App\Models\Application;
+use App\Models\ApplicationInfo;
+
+use App\Repositores\ApplicationRepository;
+use App\Services\ApplicationServece;
+use Illuminate\Support\Facades\App;
 
 class ApplicationController extends Controller
 {
 
     private $application;
+    private $service;
 
-    public function __construct(Application $application)
+    public function __construct(Application $application, ApplicationServece $service)
     {
         $this->application = $application;
+        $this->service = $service;
+        
     }
 
     public function store_application (Request $request) {
+
+        $user_ip = $request->ip();
+        $original_name_file = $request->file('curriculum')->getClientOriginalName();
+        $extension_file = $request->file('curriculum')->extension();
+        $curriculum_file = $request->file('curriculum');
+
+        $request = $this->service->validate($request->all(), 
+                                            $user_ip, 
+                                            $original_name_file, 
+                                            $extension_file, 
+                                            $curriculum_file);
         
 
-        $response = array('response' => '', 'success' => false);
+       
 
-        $rules = [
-            'name' => 'required',
-            'email' => 'required|email:rfc,dns',
-            'phone' => 'required',
-            'adress' => 'required',
-            'curriculum' => 'required|mimes:pdf,doc,docx,txt|max:500'
-        ];
-
-        $valid = validator($request->all(), $rules );
-
-
-
-
-        //Verificando se houve erro na validacao das informacoes
-        if($valid->fails()) {
-            $response['response'] = $valid->messages();
-
-        } else {
-            //Gravando cv no disco
-            if ($request->file('curriculum')->isValid()) {
-
-                //gerando nome
-                $milliseconds = round(microtime(true) * 1000);
-                $original_name = $request->file('curriculum')->getClientOriginalName();
-                $original_name = explode('.',$original_name);
-                $extension = $request->file('curriculum')->extension();
-
-                $new_name_file = $milliseconds.'_'.$original_name[0].'.'.$extension;
-
-                //gravando
-                $response_file = $request->file('curriculum')->storeAs('curriculums', $new_name_file);
-
-                if ($response_file) {
-
-
-                    $data_to_recover = [
-                        "name" => $request->input('name'),
-                        "email" => $request->input('email'),
-                        "phone" => $request->input('phone'),
-                        "adress" => $request->input('adress'),
-                        "curriculum_path" => storage_path('app/curriculums/'.$new_name_file),
-                        "ip" => $request->ip()
-                    ];
-
-                    //Salvando no banco de dados
-                    $this->application->create($data_to_recover);
-
-                    //enviando email
-
-                    Mail::to('anagomes.lucia@hotmail.com')->send(new SendApplicationEmail);
-
-                    $response['file'] = "Already ok";
-                } else {
-                    $response['file'] = "error saving file";
-                }
-            }
-            
-
-            $response['response'] = "already okay";
-            $response['success'] = true;
-        }
-
-        return $response ;
+        return $request ;
 
 
         
