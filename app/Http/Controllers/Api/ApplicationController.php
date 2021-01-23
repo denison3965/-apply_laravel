@@ -7,15 +7,11 @@ use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Symfony\Contracts\Service\Attribute\Required;
 
-//email
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SendApplicationEmail;
-
 use App\Models\Application;
-use App\Models\ApplicationInfo;
 
-use App\Repositores\ApplicationRepository;
-use App\Services\ApplicationServece;
+
+
+use App\Services\ApplicationService;
 use Illuminate\Support\Facades\App;
 
 class ApplicationController extends Controller
@@ -24,7 +20,7 @@ class ApplicationController extends Controller
     private $application;
     private $service;
 
-    public function __construct(Application $application, ApplicationServece $service)
+    public function __construct(Application $application, ApplicationService $service)
     {
         $this->application = $application;
         $this->service = $service;
@@ -34,7 +30,7 @@ class ApplicationController extends Controller
     public function store_application (Request $request) {
 
         $user_ip = $request->ip();
-        
+
         $original_name_file = $request->file('curriculum')->getClientOriginalName();
         $extension_file = $request->file('curriculum')->extension();
         $curriculum_file = $request->file('curriculum');

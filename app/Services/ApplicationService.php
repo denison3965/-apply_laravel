@@ -9,7 +9,7 @@ use App\Models\Application;
 use App\Repositores\ApplicationRepository;
 use App\Repositores\RecoverOnDiskRepository;
 
-class ApplicationServece
+class ApplicationService
 {
 
     private $application;
