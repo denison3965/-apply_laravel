@@ -64,6 +64,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Instructions to run the project
 
+- Obs: database name = api_rest_laravel,  database type = MySql 
+
 - install the dependencies :
     `composer install`
     
@@ -72,14 +74,14 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 - Now, you need to run api whith this code :
     `php artisan serve`
     
--Probably the api will open on port 8000, but if it is opened on another, it will notify you by running the command above
+- Probably the api will open on port 8000, but if it is opened on another, it will notify you by running the command above
 
--Open Insomia or Postman (i tested with insomnia)
+- Open Insomia or Postman (I tested with insomnia)
 
--Make a new request to http://127.0.0.1:8000/api/cadastrar with method POST
+- Make a new request to http://127.0.0.1:8000/api/cadastrar with method POST
 
--Set the struct of your request to Multipart Form
+- Set the struct of your request to Multipart Form
 
--And finally fill the fields like the example bellow:
+- And finally fill the fields like the example bellow:
 
 ![Preview-Screens](https://github.com/denison3965/-apply_laravel/blob/main/insominia.png)
