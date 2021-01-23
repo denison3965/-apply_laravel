@@ -82,4 +82,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 -And finally fill the fields like the example bellow:
 
-
+![Preview-Screens](https://github.com/denison3965/-apply_laravel/blob/main/insominia.png)
