@@ -61,3 +61,25 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 # -apply_laravel
+
+## Instructions to run the project
+
+- install the dependencies :
+    `composer install`
+    
+- set the necessary variables for the .env file
+
+- Now, you need to run api whith this code :
+    `php artisan serve`
+    
+-Probably the api will open on port 8000, but if it is opened on another, it will notify you by running the command above
+
+-Open Insomia or Postman (i tested with insomnia)
+
+-Make a new request to http://127.0.0.1:8000/api/cadastrar with method POST
+
+-Set the struct of your request to Multipart Form
+
+-And finally fill the fields like the example bellow:
+
+
