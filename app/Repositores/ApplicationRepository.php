@@ -16,7 +16,9 @@ class ApplicationRepository {
         $this->application = $application;
     }
 
-    public function setAllDatas () {
+    public function store ($data_to_recover) {
+        $this->application->create($data_to_recover);
 
+        return "information saved successfully";
     }
 }

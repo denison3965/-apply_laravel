@@ -34,6 +34,7 @@ class ApplicationController extends Controller
     public function store_application (Request $request) {
 
         $user_ip = $request->ip();
+        
         $original_name_file = $request->file('curriculum')->getClientOriginalName();
         $extension_file = $request->file('curriculum')->extension();
         $curriculum_file = $request->file('curriculum');
